@@ -54,7 +54,7 @@ impl Grid {
 
 #[cfg(test)]
 mod test {
-    use super::{Grid, Cell};
+    use super::{Cell, Grid, OutOfBoundsError};
 
     #[test] 
     fn can_instantiate() {
@@ -78,9 +78,20 @@ mod test {
     }
 
     #[test]
-    fn check_gives_none_when_out_of_bounds() {
+    fn get_gives_none_when_out_of_bounds() {
         let tg = Grid::new();
         let result = tg.get(Grid::MAX_SIZE, Grid::MAX_SIZE); 
         assert!(result.is_none());
+    }
+
+    #[test]
+    fn mark_gives_err_when_out_of_bounds() {
+        let oob_row = 64;
+        let oob_col = 64;
+        let mut tg = Grid::new();
+        match tg.mark(oob_row, oob_col) {
+            Ok(_) => assert!(false),
+            Err(v) => assert!(matches!(v, OutOfBoundsError)),
+        }
     }
 }
