@@ -5,7 +5,7 @@ const MAX_GRID_SIZE: usize = 64;
 /// [Cell::Unmarked] - cell is set to OFF
 /// [Cell::Marked] - cell is set to ON
 #[derive(Copy, Clone)]
-enum Cell {
+pub enum Cell {
     Unmarked,
     Marked
 }
