@@ -1,3 +1,5 @@
+use crate::errors::OutOfBoundsError;
+
 const MAX_GRID_SIZE: usize = 64;
 
 /// A representation of a Cell in the [Grid].
@@ -9,10 +11,6 @@ pub enum Cell {
     Unmarked,
     Marked
 }
-
-/// An error indicating the action could not be completed due to
-/// the fact that it is out of the bounds of the grid.
-struct OutOfBoundsError;
 
 /// A representation of the underlying Grid shown to the user in the terminal.
 /// The grid is a 64x64 2-D array, with each element being a [Cell].
