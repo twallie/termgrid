@@ -10,6 +10,10 @@ pub enum Cell {
     Marked
 }
 
+/// An error indicating the action could not be completed due to
+/// the fact that it is out of the bounds of the grid.
+pub struct OutOfBoundsError;
+
 /// A representation of the underlying Grid shown to the user in the terminal.
 /// The grid is a 64x64 2-D array, with each element being a [Cell].
 pub struct Grid {
@@ -29,14 +33,22 @@ impl Grid {
     }
 
     pub fn get(&self, row_index: usize, col_index: usize) -> Option<Cell> {
-        if row_index >= Grid::MAX_SIZE || row_index < 0 || col_index >= Grid::MAX_SIZE || row_index < 0 {
+        if !Grid::in_bounds(row_index, col_index) {
             return None;
         }
         Some(self.cells[row_index][col_index])
     }
 
-    pub fn mark(&mut self, row_index: usize, col_index: usize) -> () {
+    pub fn mark(&mut self, row_index: usize, col_index: usize) -> Result<(), OutOfBoundsError> {
+        if !Grid::in_bounds(row_index, col_index) {
+            return Err(OutOfBoundsError);
+        }
         self.cells[row_index][col_index] = Cell::Marked;
+        Ok(())
+    }
+
+    fn in_bounds(row_index: usize, col_index: usize) -> bool {
+        row_index < Grid::MAX_SIZE && col_index < Grid::MAX_SIZE 
     }
 }
 
