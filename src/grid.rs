@@ -28,7 +28,7 @@ impl Grid {
         }
     }
 
-    pub fn is_marked(&self, row_index: usize, col_index: usize) -> Option<Cell> {
+    pub fn get(&self, row_index: usize, col_index: usize) -> Option<Cell> {
         if row_index >= Grid::MAX_SIZE || row_index < 0 || col_index >= Grid::MAX_SIZE || row_index < 0 {
             return None;
         }
@@ -51,24 +51,24 @@ mod test {
     }
 
     #[test]
-    fn can_mark_and_check_cell() {
+    fn mark_and_get_cell() {
         let mut tg = Grid::new();
 
         let row_index = 0;
         let col_index = 0;
-        let _unmarked = tg.is_marked(row_index, col_index).unwrap();
+        let _unmarked = tg.get(row_index, col_index).unwrap();
         assert!(matches!(Cell::Unmarked, _unmarked));
 
         tg.mark(row_index, col_index);
 
-        let _marked = tg.is_marked(row_index, col_index).unwrap();
+        let _marked = tg.get(row_index, col_index).unwrap();
         assert!(matches!(Cell::Marked, _marked));
     }
 
     #[test]
     fn check_gives_none_when_out_of_bounds() {
         let tg = Grid::new();
-        let result = tg.is_marked(Grid::MAX_SIZE, Grid::MAX_SIZE); 
+        let result = tg.get(Grid::MAX_SIZE, Grid::MAX_SIZE); 
         assert!(result.is_none());
     }
 }
