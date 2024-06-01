@@ -1,18 +1,27 @@
+const MAX_GRID_SIZE: usize = 64;
+
+/// A representation of a Cell in the [Grid].
+/// Each cell can have two states:
+/// [Cell::Unmarked] - cell is set to OFF
+/// [Cell::Marked] - cell is set to ON
 #[derive(Copy, Clone)]
 pub enum Cell {
     Unmarked,
     Marked
 }
 
-const MAX_GRID_SIZE: usize = 64;
-
+/// A representation of the underlying Grid shown to the user in the terminal.
+/// The grid is a 64x64 2-D array, with each element being a [Cell].
 pub struct Grid {
     cells: [[Cell; MAX_GRID_SIZE]; MAX_GRID_SIZE]
 }
 
 impl Grid {
+    /// The max size of the grid.
+    /// This is the maximum number of slots both in a row and column.
     pub const MAX_SIZE: usize = MAX_GRID_SIZE;
 
+    /// Creates a new blank Grid object, with all elements set to [Cell::Unmarked]
     pub fn new() -> Grid {
         Grid {
             cells: [[Cell::Unmarked; Grid::MAX_SIZE]; Grid::MAX_SIZE]
