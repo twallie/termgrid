@@ -16,7 +16,7 @@ struct OutOfBoundsError;
 
 /// A representation of the underlying Grid shown to the user in the terminal.
 /// The grid is a 64x64 2-D array, with each element being a [Cell].
-struct Grid {
+pub struct Grid {
     cells: [[Cell; MAX_GRID_SIZE]; MAX_GRID_SIZE]
 }
 
