@@ -37,6 +37,8 @@ impl Printer {
 
 #[cfg(test)]
 mod test {
+    use crate::errors::OutOfBoundsError;
+
     use super::Printer;
 
     #[test]
@@ -59,6 +61,16 @@ mod test {
         match result {
             Ok(_) => assert!(true),
             Err(_) => assert!(false)
+        }
+    }
+
+    #[test]
+    fn cannot_mark_if_out_of_bounds() {
+        let mut p = Printer::new();
+        let result = p.mark(64,64);
+        match result {
+            Ok(_) => assert!(false),
+            Err(v) => assert!(matches!(v, OutOfBoundsError))
         }
     }
 }
