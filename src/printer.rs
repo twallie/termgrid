@@ -1,4 +1,4 @@
-use crate::grid::Grid;
+use crate::grid::{Cell, Grid};
 
 pub struct Printer {
     grid: Grid
@@ -10,6 +10,25 @@ impl Printer {
            grid: Grid::new() 
         }
     }
+
+    pub fn print(&self) -> () {
+        for mut col_index in 0..64 {
+            col_index = 63 - col_index;
+            for row_index in 0..64 {
+                let shown = match self.grid.get(row_index, col_index) {
+                    Some(v) => {
+                        match v {
+                            Cell::Unmarked => '.',
+                            Cell::Marked => 'O'
+                        }
+                    },
+                    None => 'X',
+                };
+                print!("{shown}");
+            }
+            print!("\n");
+        }
+    }
 }
 
 #[cfg(test)]
@@ -19,6 +38,13 @@ mod test {
     #[test]
     fn can_instantiate() {
         let _ = Printer::new();
+        assert!(true);
+    }
+
+    #[test]
+    fn print_doesnt_crash() {
+        let p = Printer::new();
+        p.print();
         assert!(true);
     }
 }
