@@ -71,7 +71,7 @@ mod test {
         let _unmarked = tg.get(row_index, col_index).unwrap();
         assert!(matches!(Cell::Unmarked, _unmarked));
 
-        tg.mark(row_index, col_index);
+        let _ = tg.mark(row_index, col_index);
 
         let _marked = tg.get(row_index, col_index).unwrap();
         assert!(matches!(Cell::Marked, _marked));
