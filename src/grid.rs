@@ -1,5 +1,5 @@
 #[derive(Copy, Clone)]
-enum Cell {
+pub enum Cell {
     Unmarked,
     Marked
 }
@@ -19,11 +19,11 @@ impl Grid {
         }
     }
 
-    pub fn is_marked(&self, row_index: usize, col_index: usize) -> Option<bool> {
+    pub fn is_marked(&self, row_index: usize, col_index: usize) -> Option<Cell> {
         if row_index >= Grid::MAX_SIZE || row_index < 0 || col_index >= Grid::MAX_SIZE || row_index < 0 {
             return None;
         }
-        Some(matches!(self.cells[row_index][col_index], Cell::Marked))
+        Some(self.cells[row_index][col_index])
     }
 
     pub fn mark(&mut self, row_index: usize, col_index: usize) -> () {
@@ -33,7 +33,7 @@ impl Grid {
 
 #[cfg(test)]
 mod test {
-    use super::Grid;
+    use super::{Grid, Cell};
 
     #[test] 
     fn can_instantiate() {
@@ -47,13 +47,13 @@ mod test {
 
         let row_index = 0;
         let col_index = 0;
-        let mut is_marked = tg.is_marked(row_index, col_index);
-        assert!(is_marked.unwrap() == false);
+        let _unmarked = tg.is_marked(row_index, col_index).unwrap();
+        assert!(matches!(Cell::Unmarked, _unmarked));
 
         tg.mark(row_index, col_index);
 
-        is_marked = tg.is_marked(row_index, col_index);
-        assert!(is_marked.unwrap() == true);
+        let _marked = tg.is_marked(row_index, col_index).unwrap();
+        assert!(matches!(Cell::Marked, _marked));
     }
 
     #[test]
