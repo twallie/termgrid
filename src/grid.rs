@@ -5,18 +5,18 @@ const MAX_GRID_SIZE: usize = 64;
 /// [Cell::Unmarked] - cell is set to OFF
 /// [Cell::Marked] - cell is set to ON
 #[derive(Copy, Clone)]
-pub enum Cell {
+enum Cell {
     Unmarked,
     Marked
 }
 
 /// An error indicating the action could not be completed due to
 /// the fact that it is out of the bounds of the grid.
-pub struct OutOfBoundsError;
+struct OutOfBoundsError;
 
 /// A representation of the underlying Grid shown to the user in the terminal.
 /// The grid is a 64x64 2-D array, with each element being a [Cell].
-pub struct Grid {
+struct Grid {
     cells: [[Cell; MAX_GRID_SIZE]; MAX_GRID_SIZE]
 }
 
