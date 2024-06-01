@@ -42,6 +42,9 @@ impl Grid {
         Some(self.cells[row_index][col_index])
     }
 
+    /// Attempts to mark the cell at (`row_index`,`col_index`) as [Cell::Marked].
+    /// Returns a [Result]. If successful (or cell is already marked), nothing is given.
+    /// If the given indices are out of bounds, a [OutOfBoundsError] will be given.
     pub fn mark(&mut self, row_index: usize, col_index: usize) -> Result<(), OutOfBoundsError> {
         if !Grid::in_bounds(row_index, col_index) {
             return Err(OutOfBoundsError);
