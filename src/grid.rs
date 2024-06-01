@@ -32,6 +32,9 @@ impl Grid {
         }
     }
 
+    /// Attempts to get the value of the specified cell at the given `row_index` and `col_index`.
+    /// Returns an [Option]. If successful, the option will yield an [Cell]. If unsuccessful,
+    /// the option will yield [None]
     pub fn get(&self, row_index: usize, col_index: usize) -> Option<Cell> {
         if !Grid::in_bounds(row_index, col_index) {
             return None;
