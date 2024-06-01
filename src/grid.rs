@@ -19,8 +19,11 @@ impl Grid {
         }
     }
 
-    pub fn is_marked(&self, row_index: usize, col_index: usize) -> bool {
-        matches!(self.cells[row_index][col_index], Cell::Marked)
+    pub fn is_marked(&self, row_index: usize, col_index: usize) -> Option<bool> {
+        if row_index >= Grid::MAX_SIZE || row_index < 0 || col_index >= Grid::MAX_SIZE || row_index < 0 {
+            return None;
+        }
+        Some(matches!(self.cells[row_index][col_index], Cell::Marked))
     }
 
     pub fn mark(&mut self, row_index: usize, col_index: usize) -> () {
@@ -45,18 +48,18 @@ mod test {
         let row_index = 0;
         let col_index = 0;
         let mut is_marked = tg.is_marked(row_index, col_index);
-        assert!(!is_marked);
+        assert!(is_marked.unwrap() == false);
 
         tg.mark(row_index, col_index);
 
         is_marked = tg.is_marked(row_index, col_index);
-        assert!(is_marked);
+        assert!(is_marked.unwrap() == true);
     }
 
     #[test]
-    #[should_panic]
-    fn panic_when_checking_out_of_bounds() {
+    fn check_gives_none_when_out_of_bounds() {
         let tg = Grid::new();
-        let _result = tg.is_marked(Grid::MAX_SIZE, Grid::MAX_SIZE); 
+        let result = tg.is_marked(Grid::MAX_SIZE, Grid::MAX_SIZE); 
+        assert!(result.is_none());
     }
 }
