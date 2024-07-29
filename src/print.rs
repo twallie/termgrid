@@ -24,7 +24,7 @@ where T: Copy + Display + Eq {
         initial_print(self.current_state.clone());
     }
 
-    pub fn update(mut self, new_grid: Grid<T>) -> Result<(), PrinterUpdateError> {
+    pub fn update(mut self, new_grid: Grid<T>) -> Result<Self, PrinterUpdateError> {
         self.previous_state = Some(self.current_state);
         self.current_state = new_grid;
 
@@ -36,7 +36,7 @@ where T: Copy + Display + Eq {
             }
         );
 
-        Ok(())
+        Ok(self)
     }
 
 }
