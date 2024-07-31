@@ -59,7 +59,7 @@ where T: Copy + Display {
 
     print!(
         "{}",
-        termion::cursor::Goto(row_count as u16, 0)
+        termion::cursor::Goto(0, row_count as u16)
     );
     let _ = io::stdout().flush();
 }
@@ -83,7 +83,7 @@ where T: Copy + Display + Eq {
     }
     print!(
         "{}",
-        termion::cursor::Goto(row_count as u16, 0)
+        termion::cursor::Goto(0, row_count as u16)
     );
     let _ = io::stdout().flush();
 }
