@@ -57,6 +57,10 @@ where T: Copy + Display {
         }
     }
 
+    print!(
+        "{}",
+        termion::cursor::Goto(row_count as u16, 0)
+    );
     let _ = io::stdout().flush();
 }
 
@@ -77,6 +81,10 @@ where T: Copy + Display + Eq {
             }
         }
     }
+    print!(
+        "{}",
+        termion::cursor::Goto(row_count as u16, 0)
+    );
     let _ = io::stdout().flush();
 }
 
@@ -84,7 +92,7 @@ where T: Copy + Display + Eq {
 mod test {
     use std::{fmt, thread, time};
     use crate::grid::Grid;
-    use super::{initial_print, update_print, Printer};
+    use super::Printer;
 
     #[derive(Clone, Copy, Eq, PartialEq)]
     enum Test {
