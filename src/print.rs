@@ -36,19 +36,13 @@ where T: Copy + Display + Eq {
             }
         );
 
+
         Ok(self)
     }
     
-    pub fn reset_cursor(&self) {
-        print!(
-            "{}{}",
-            termion::cursor::Goto(self.current_state.grid.len() as u16, 0),
-            termion::cursor::Show
-        )
-    }
 }
 
-fn initial_print<T>(state: Grid<T>) -> () 
+fn initial_print<T>(state: Grid<T>) -> ()
 where T: Copy + Display {
     let col_count = state.grid.len();
     let row_count = state.grid[0].len();
@@ -85,6 +79,17 @@ where T: Copy + Display + Eq {
         }
     }
     let _ = io::stdout().flush();
+}
+
+fn reset_cursor() {
+    let size = termion::terminal_size().unwrap();
+    print!("{}", termion::cursor::Goto(0, size.1+1));
+    io::stdout().flush().unwrap();
+}
+
+pub fn reset_cursor_with_newline() {
+    reset_cursor();
+    print!("\n");
 }
 
 #[cfg(test)]
