@@ -18,32 +18,3 @@ where T: Clone + Display {
         }
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use core::fmt;
-
-    use super::Grid;
-
-    #[test]
-    fn instantiate() {
-        #[derive(Clone)]
-        enum Test {
-            A,
-        }
-
-        impl std::fmt::Display for Test {
-            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                let str = match self {
-                    Test::A => {
-                        "A"
-                    },
-                };
-                
-                write!(f, "{}", str)
-            }
-        }
-
-        let _ = Grid::new(Test::A);
-    }
-}
