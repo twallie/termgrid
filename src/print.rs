@@ -36,7 +36,6 @@ where T: Copy + Display + Eq {
             }
         );
 
-
         Ok(self)
     }
     
@@ -79,20 +78,4 @@ where T: Copy + Display + Eq {
         }
     }
     let _ = io::stdout().flush();
-}
-
-fn reset_cursor_internal() {
-    let size = termion::terminal_size().unwrap();
-    print!("{}", termion::cursor::Goto(0, size.1+1));
-    io::stdout().flush().unwrap();
-}
-
-fn show_cursor() {
-    print!("{}", termion::cursor::Show);
-}
-
-pub fn reset_cursor() {
-    reset_cursor_internal();
-    show_cursor();
-    print!("\n");
 }
