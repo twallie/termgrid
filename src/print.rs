@@ -41,17 +41,25 @@ where T: Copy + Display + Eq {
     
 }
 
-fn initial_print<T>(state: Grid<T>) -> ()
+fn initial_print<T>(grid: Grid<T>) -> ()
 where T: Copy + Display {
-    let col_count = state.grid.len();
-    let row_count = state.grid[0].len();
+    let col_count = grid.height();
+    let row_count = grid.height();
     print!("{}{}", termion::clear::All, termion::cursor::Hide);
-    for col in 1..col_count+1 {
-        for row in 1..row_count+1 {
-            let cell_state = state.grid[col-1][row-1];
+    for y in 0..col_count {
+        for x in 0..row_count {
+            let cell_state = grid.get(x, y);
+            let terminal_coordinates = convert_grid_coordinates_to_terminal_coordinates(
+                x, 
+                y, 
+                grid.height()
+            );
             print!(
                 "{}{}",
-                termion::cursor::Goto(row as u16, col as u16),
+                termion::cursor::Goto(
+                    terminal_coordinates.0 as u16, 
+                    terminal_coordinates.1 as u16
+                ),
                 cell_state
             )
         }
@@ -60,18 +68,34 @@ where T: Copy + Display {
     let _ = io::stdout().flush();
 }
 
-fn update_print<T>(state: &Grid<T>, previous_state: &Grid<T>) -> ()
+fn convert_grid_coordinates_to_terminal_coordinates(grid_x: usize, grid_y: usize, grid_height: usize) -> (usize, usize) {
+    let terminal_x = grid_x + 1;
+    let terminal_y = grid_height - grid_y;
+
+    (terminal_x, terminal_y)
+}
+
+fn update_print<T>(grid: &Grid<T>, previous_grid: &Grid<T>) -> ()
 where T: Copy + Display + Eq {
-    let col_count = state.grid.len();
-    let row_count = state.grid[0].len();
-    for col in 1..col_count+1 {
-        for row in 1..row_count+1 {
-            let cell_state = state.grid[col-1][row-1];
-            let prev_state = previous_state.grid[col-1][row-1];
+    let col_count = grid.height();
+    let row_count = grid.length();
+    for y in 0..col_count {
+        for x in 0..row_count {
+            let cell_state = grid.get(x, y);
+            let prev_state = previous_grid.get(x, y);
+            let terminal_coordinates = convert_grid_coordinates_to_terminal_coordinates(
+                x,
+                y,
+                grid.length()
+            );
+
             if cell_state != prev_state {
                 print!(
                     "{}{}",
-                    termion::cursor::Goto(row as u16, col as u16),
+                    termion::cursor::Goto(
+                        terminal_coordinates.0 as u16,
+                        terminal_coordinates.1 as u16
+                    ),
                     cell_state
                 )
             }
