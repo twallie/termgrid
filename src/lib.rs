@@ -1,2 +1,3 @@
-pub mod grid;
-pub mod printer;
+mod grid;
+mod printer;
+pub mod controller;
