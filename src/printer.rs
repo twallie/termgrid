@@ -1,12 +1,12 @@
 
-use std::{cell, fmt::Display, io::{self, Write}};
+use std::fmt::Display;
 
-use crate::grid::TerminalGrid;
+use crate::grid::Grid;
 
 #[derive(Debug)]
 pub struct PrintError;
 
-pub fn print_grid<T>(grid: &TerminalGrid<T>) -> Result<(), PrintError>
+pub fn print_grid<T>(grid: &Grid<T>) -> Result<(), PrintError>
 where T: Clone + Display {
     clear_screen();
 
@@ -44,7 +44,7 @@ fn clear_screen() {
 
 #[cfg(test)]
 mod tests {
-    use crate::grid::TerminalGrid;
+    use crate::grid::Grid;
     use std::fmt;
 
     use super::print_grid;
@@ -66,7 +66,7 @@ mod tests {
 
     #[test]
     fn can_print() {
-        let mut grid = TerminalGrid::new(&TestStates::Empty).unwrap();
+        let mut grid = Grid::new(&TestStates::Empty).unwrap();
         grid.set_cell(&0, &0, TestStates::Filled).unwrap();
         grid.set_cell(&0, &(grid.get_height() - 1), TestStates::Filled).unwrap();
         grid.set_cell(&(grid.get_length() - 1), &0, TestStates::Filled).unwrap();
