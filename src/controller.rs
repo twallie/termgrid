@@ -1,4 +1,4 @@
-use crate::grid::{self, CellError, Grid, TerminalSizeError};
+use crate::grid::{CellError, Grid, TerminalSizeError};
 
 pub struct Controller<T> {
     grid: Grid<T>,
