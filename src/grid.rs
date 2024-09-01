@@ -10,9 +10,9 @@ pub struct Grid<T> {
 pub struct TerminalSizeError;
 
 #[derive(Debug)]
-pub enum GetError {
+pub enum CellError {
     ColumnOutOfBounds,
-    RowOutOfBounds
+    RowOutOfBounds,
 }
 
 impl<T> Grid<T>
@@ -30,33 +30,33 @@ where
         Ok(Grid {
             vec: vec![vec![default.clone(); row_count]; column_count],
             height: row_count,
-            length: column_count
+            length: column_count,
         })
     }
 
-    pub fn get_cell(&self, x: &usize, y: &usize) -> Result<&T, GetError> {
+    pub fn get_cell(&self, x: &usize, y: &usize) -> Result<&T, CellError> {
         let row = match &self.vec.get(*x) {
             &Some(v) => v,
-            &None => return Err(GetError::RowOutOfBounds)
+            &None => return Err(CellError::RowOutOfBounds),
         };
 
         let value = match row.get(*y) {
             Some(v) => v,
-            None => return Err(GetError::ColumnOutOfBounds)
+            None => return Err(CellError::ColumnOutOfBounds),
         };
 
         Ok(value)
     }
 
-    pub fn set_cell(&mut self, x: &usize, y: &usize, value: T) -> Result<(), GetError> {
+    pub fn set_cell(&mut self, x: &usize, y: &usize, value: T) -> Result<(), CellError> {
         let row = match self.vec.get_mut(*x) {
             Some(v) => v,
-            None => return Err(GetError::RowOutOfBounds)
+            None => return Err(CellError::RowOutOfBounds),
         };
 
         let cell = match row.get_mut(*y) {
             Some(v) => v,
-            None => return Err(GetError::ColumnOutOfBounds)
+            None => return Err(CellError::ColumnOutOfBounds),
         };
 
         *cell = value;
@@ -80,14 +80,14 @@ mod tests {
     #[derive(Clone, PartialEq)]
     enum TestStates {
         Filled,
-        Empty
+        Empty,
     }
 
     #[test]
     fn new() {
         match Grid::new(&TestStates::Empty) {
             Ok(_) => assert!(true),
-            Err(_) => assert!(false)
+            Err(_) => assert!(false),
         };
     }
 
@@ -96,7 +96,7 @@ mod tests {
         let grid = Grid::new(&TestStates::Empty).unwrap();
         match grid.get_cell(&0, &0) {
             Ok(v) => assert!(v == &TestStates::Empty),
-            Err(_) => assert!(false)
+            Err(_) => assert!(false),
         }
     }
 
@@ -105,17 +105,17 @@ mod tests {
         let mut grid = Grid::new(&TestStates::Empty).unwrap();
         match grid.get_cell(&0, &0) {
             Ok(v) => assert!(v == &TestStates::Empty),
-            Err(_) => assert!(false)
+            Err(_) => assert!(false),
         }
 
         match grid.set_cell(&0, &0, TestStates::Filled) {
             Ok(_) => assert!(true),
-            Err(_) => assert!(false)
+            Err(_) => assert!(false),
         }
 
         match grid.get_cell(&0, &0) {
             Ok(v) => assert!(v == &TestStates::Filled),
-            Err(_) => assert!(false)
+            Err(_) => assert!(false),
         }
     }
 }
