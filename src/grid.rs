@@ -1,6 +1,6 @@
 use termion::terminal_size;
 
-pub struct TerminalGrid<T> {
+pub struct Grid<T> {
     vec: Vec<Vec<T>>,
     height: usize,
     length: usize,
@@ -15,11 +15,11 @@ pub enum GetError {
     RowOutOfBounds
 }
 
-impl<T> TerminalGrid<T>
+impl<T> Grid<T>
 where
     T: Clone,
 {
-    pub fn new(default: &T) -> Result<TerminalGrid<T>, TerminalSizeError> {
+    pub fn new(default: &T) -> Result<Grid<T>, TerminalSizeError> {
         let size = match terminal_size() {
             Ok(v) => v,
             Err(_) => return Err(TerminalSizeError),
@@ -27,7 +27,7 @@ where
         let column_count = size.0 as usize;
         let row_count = size.1 as usize;
 
-        Ok(TerminalGrid {
+        Ok(Grid {
             vec: vec![vec![default.clone(); row_count]; column_count],
             height: row_count,
             length: column_count
@@ -85,7 +85,7 @@ mod tests {
 
     #[test]
     fn new() {
-        match TerminalGrid::new(&TestStates::Empty) {
+        match Grid::new(&TestStates::Empty) {
             Ok(_) => assert!(true),
             Err(_) => assert!(false)
         };
@@ -93,7 +93,7 @@ mod tests {
 
     #[test]
     fn get_cell_without_setting() {
-        let grid = TerminalGrid::new(&TestStates::Empty).unwrap();
+        let grid = Grid::new(&TestStates::Empty).unwrap();
         match grid.get_cell(&0, &0) {
             Ok(v) => assert!(v == &TestStates::Empty),
             Err(_) => assert!(false)
@@ -102,7 +102,7 @@ mod tests {
 
     #[test]
     fn set_and_get_cell() {
-        let mut grid = TerminalGrid::new(&TestStates::Empty).unwrap();
+        let mut grid = Grid::new(&TestStates::Empty).unwrap();
         match grid.get_cell(&0, &0) {
             Ok(v) => assert!(v == &TestStates::Empty),
             Err(_) => assert!(false)
