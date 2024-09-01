@@ -35,12 +35,12 @@ where
     }
 
     pub fn get_cell(&self, x: &usize, y: &usize) -> Result<&T, GetError> {
-        let row = match &self.vec.get(*y) {
+        let row = match &self.vec.get(*x) {
             &Some(v) => v,
             &None => return Err(GetError::RowOutOfBounds)
         };
 
-        let value = match row.get(*x) {
+        let value = match row.get(*y) {
             Some(v) => v,
             None => return Err(GetError::ColumnOutOfBounds)
         };
@@ -49,12 +49,12 @@ where
     }
 
     pub fn set_cell(&mut self, x: &usize, y: &usize, value: T) -> Result<(), GetError> {
-        let row = match self.vec.get_mut(*y) {
+        let row = match self.vec.get_mut(*x) {
             Some(v) => v,
             None => return Err(GetError::RowOutOfBounds)
         };
 
-        let cell = match row.get_mut(*x) {
+        let cell = match row.get_mut(*y) {
             Some(v) => v,
             None => return Err(GetError::ColumnOutOfBounds)
         };
