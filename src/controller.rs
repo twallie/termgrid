@@ -1,4 +1,4 @@
-use crate::grid::{self, Grid, TerminalSizeError};
+use crate::grid::{self, CellError, Grid, TerminalSizeError};
 
 pub struct Controller<T> {
     grid: Grid<T>,
@@ -14,6 +14,13 @@ where
             Err(v) => return Err(v),
         };
         Ok(Controller { grid })
+    }
+
+    pub fn set(&mut self, x: &usize, y: &usize, value: T) -> Result<(), CellError> {
+        match self.grid.set_cell(x, y, value) {
+            Ok(_) => Ok(()),
+            Err(v) => return Err(v),
+        }
     }
 }
 
@@ -40,6 +47,12 @@ mod tests {
 
     #[test]
     fn can_instantiate() {
-        let _ = Controller::new(&TestStates::Empty);
+        let _ = Controller::new(&TestStates::Empty).unwrap();
+    }
+
+    #[test]
+    fn can_set() {
+        let mut controller = Controller::new(&TestStates::Empty).unwrap();
+        controller.set(&0, &0, TestStates::Filled).unwrap();
     }
 }
