@@ -1,6 +1,7 @@
 #[derive(Debug)]
 pub struct OutOfBoundsError;
 
+#[derive(Clone)]
 pub struct VectorGrid<T> {
     data: Vec<Vec<T>>,
     empty: T,

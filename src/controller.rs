@@ -3,6 +3,7 @@ use crate::{
     printer::{clear_screen, goto_end, print_in_place},
 };
 
+#[derive(Clone)]
 pub struct TermGrid<T> {
     grid: VectorGrid<T>,
 }
