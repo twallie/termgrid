@@ -28,9 +28,9 @@ where
 
             // TODO: actually handle this
             let element = grid.get_element(data_column_index, data_row_index).unwrap();
-            let mut print_str = ".";
+            let mut print_str = " ";
             if *element == *grid.get_filled() {
-                print_str = "*"
+                print_str = "#"
             }
             print!(
                 "{}{}",
