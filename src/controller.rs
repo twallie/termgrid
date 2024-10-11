@@ -3,7 +3,7 @@ use crate::{
     printer::{clear_screen, goto_end, print_in_place},
 };
 
-struct TermGrid<T> {
+pub struct TermGrid<T> {
     grid: VectorGrid<T>,
 }
 
@@ -11,7 +11,7 @@ impl<T> TermGrid<T>
 where
     T: Clone + Eq + PartialEq,
 {
-    fn new(filled: &T, empty: &T) -> TermGrid<T> {
+    pub fn new(filled: &T, empty: &T) -> TermGrid<T> {
         // TODO: properly handle this
         let size = termion::terminal_size().unwrap();
         let rows: usize = size.1.into();
@@ -22,23 +22,23 @@ where
         TermGrid { grid }
     }
 
-    fn set(&mut self, column: usize, row: usize) -> Result<(), OutOfBoundsError> {
+    pub fn set(&mut self, column: usize, row: usize) -> Result<(), OutOfBoundsError> {
         self.grid.set_element(column, row)
     }
 
-    fn unset(&mut self, column: usize, row: usize) -> Result<(), OutOfBoundsError> {
+    pub fn unset(&mut self, column: usize, row: usize) -> Result<(), OutOfBoundsError> {
         self.grid.unset_element(column, row)
     }
 
-    fn start(&self) {
+    pub fn start(&self) {
         clear_screen();
     }
 
-    fn update(&self) {
+    pub fn update(&self) {
         print_in_place(&self.grid)
     }
 
-    fn end(&self) {
+    pub fn end(&self) {
         goto_end();
     }
 }
