@@ -46,6 +46,14 @@ where
     pub fn get(&self, column: usize, row: usize) -> Result<&T, OutOfBoundsError> {
         self.grid.get_element(column, row)
     }
+
+    pub fn num_rows(&self) -> usize {
+        self.grid.get_rows()
+    }
+
+    pub fn num_columns(&self) -> usize {
+        self.grid.get_columns()
+    }
 }
 
 #[cfg(test)]
