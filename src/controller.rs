@@ -1,6 +1,6 @@
 use crate::{
     grid::{OutOfBoundsError, VectorGrid},
-    printer::{clear_screen, goto_end, print_in_place},
+    printer::{clear_screen, goto_end, hide_cursor, print_in_place, show_cursor},
 };
 
 #[derive(Clone)]
@@ -23,6 +23,14 @@ where
         TermGrid { grid }
     }
 
+    pub fn num_rows(&self) -> usize {
+        self.grid.get_rows()
+    }
+
+    pub fn num_columns(&self) -> usize {
+        self.grid.get_columns()
+    }
+
     pub fn set(&mut self, column: usize, row: usize) -> Result<(), OutOfBoundsError> {
         self.grid.set_element(column, row)
     }
@@ -33,6 +41,7 @@ where
 
     pub fn start(&self) {
         clear_screen();
+        hide_cursor();
     }
 
     pub fn update(&self) {
@@ -41,18 +50,11 @@ where
 
     pub fn end(&self) {
         goto_end();
+        show_cursor();
     }
 
     pub fn get(&self, column: usize, row: usize) -> Result<&T, OutOfBoundsError> {
         self.grid.get_element(column, row)
-    }
-
-    pub fn num_rows(&self) -> usize {
-        self.grid.get_rows()
-    }
-
-    pub fn num_columns(&self) -> usize {
-        self.grid.get_columns()
     }
 }
 

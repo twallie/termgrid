@@ -3,6 +3,14 @@ pub fn clear_screen() {
     print!("{}", termion::clear::All)
 }
 
+pub fn hide_cursor() {
+    print!("{}", termion::cursor::Hide);
+}
+
+pub fn show_cursor() {
+    print!("{}", termion::cursor::Show);
+}
+
 pub fn goto_end() {
     let size = termion::terminal_size().unwrap();
     print!("{}\n", termion::cursor::Goto(size.0, size.1))
