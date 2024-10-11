@@ -11,11 +11,11 @@ impl<T> VectorGrid<T>
 where
     T: Clone,
 {
-    pub fn new(filled: T, empty: T, rows: usize, columns: usize) -> VectorGrid<T> {
+    pub fn new(filled: &T, empty: &T, rows: usize, columns: usize) -> VectorGrid<T> {
         VectorGrid {
             data: vec![vec![empty.clone(); columns]; rows],
-            empty,
-            filled,
+            empty: empty.clone(),
+            filled: filled.clone(),
         }
     }
 
@@ -27,11 +27,10 @@ where
         self.data.len()
     }
 
-    pub fn set_element(
+    pub fn unset_element(
         &mut self,
         column_index: usize,
         row_index: usize,
-        value: T,
     ) -> Result<(), OutOfBoundsError> {
         let row = match self.data.get_mut(row_index) {
             Some(v) => v,
@@ -39,7 +38,25 @@ where
         };
 
         match row.get_mut(column_index) {
-            Some(v) => *v = value,
+            Some(v) => *v = self.empty.clone(),
+            None => return Err(OutOfBoundsError),
+        };
+
+        Ok(())
+    }
+
+    pub fn set_element(
+        &mut self,
+        column_index: usize,
+        row_index: usize,
+    ) -> Result<(), OutOfBoundsError> {
+        let row = match self.data.get_mut(row_index) {
+            Some(v) => v,
+            None => return Err(OutOfBoundsError),
+        };
+
+        match row.get_mut(column_index) {
+            Some(v) => *v = self.filled.clone(),
             None => return Err(OutOfBoundsError),
         };
 
