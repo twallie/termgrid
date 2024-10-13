@@ -1,5 +1,6 @@
 use crate::{
-    grid::{OutOfBoundsError, VectorGrid},
+    errors::{OutOfBoundsError, TerminalSizeError},
+    grid::VectorGrid,
     printer::{clear_screen, goto_end, hide_cursor, print_in_place, show_cursor},
 };
 
@@ -8,19 +9,30 @@ pub struct TermGrid<T> {
     grid: VectorGrid<T>,
 }
 
+/// Returns a tuple with the form (columns, rows)
+fn get_terminal_size() -> Result<(usize, usize), TerminalSizeError> {
+    match termion::terminal_size() {
+        Ok(v) => Ok((v.0.into(), v.1.into())),
+        Err(_) => Err(TerminalSizeError),
+    }
+}
+
 impl<T> TermGrid<T>
 where
     T: Clone + Eq + PartialEq,
 {
-    pub fn new(filled: &T, empty: &T) -> TermGrid<T> {
-        // TODO: properly handle this
-        let size = termion::terminal_size().unwrap();
+    pub fn new(filled: &T, empty: &T) -> Result<TermGrid<T>, TerminalSizeError> {
+        let size = match get_terminal_size() {
+            Ok(v) => v,
+            Err(err) => return Err(err),
+        };
+
         let rows: usize = size.1.into();
         let columns: usize = size.0.into();
 
         let grid: VectorGrid<T> = VectorGrid::new(&filled, &empty, rows, columns);
 
-        TermGrid { grid }
+        Ok(TermGrid { grid })
     }
 
     pub fn num_rows(&self) -> usize {
@@ -31,12 +43,12 @@ where
         self.grid.get_columns()
     }
 
-    pub fn set(&mut self, column: usize, row: usize) -> Result<(), OutOfBoundsError> {
-        self.grid.set_element(column, row)
+    pub fn set(&mut self, x: usize, y: usize) -> Result<(), OutOfBoundsError> {
+        self.grid.set_element(x, y)
     }
 
-    pub fn unset(&mut self, column: usize, row: usize) -> Result<(), OutOfBoundsError> {
-        self.grid.unset_element(column, row)
+    pub fn unset(&mut self, x: usize, y: usize) -> Result<(), OutOfBoundsError> {
+        self.grid.unset_element(x, y)
     }
 
     pub fn start(&self) {
@@ -53,8 +65,8 @@ where
         show_cursor();
     }
 
-    pub fn get(&self, column: usize, row: usize) -> Result<&T, OutOfBoundsError> {
-        self.grid.get_element(column, row)
+    pub fn get(&self, x: usize, y: usize) -> Result<&T, OutOfBoundsError> {
+        self.grid.get_element(x, y)
     }
 }
 
@@ -70,7 +82,7 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let mut termgrid = TermGrid::new(&TestEnum::Filled, &TestEnum::Empty);
+        let mut termgrid = TermGrid::new(&TestEnum::Filled, &TestEnum::Empty).unwrap();
         termgrid.set(0, 0).unwrap();
         termgrid.set(1, 1).unwrap();
         termgrid.start();
