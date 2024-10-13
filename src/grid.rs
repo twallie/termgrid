@@ -67,10 +67,6 @@ where
         &self.filled
     }
 
-    pub fn get_empty(&self) -> &T {
-        &self.filled
-    }
-
     pub fn get_element(
         &self,
         column_index: usize,
