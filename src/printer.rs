@@ -1,4 +1,5 @@
-use crate::{errors::OutOfBoundsError, grid::VectorGrid};
+use crate::grid::VectorGrid;
+
 pub fn clear_screen() {
     print!("{}", termion::clear::All)
 }
