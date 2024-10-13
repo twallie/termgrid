@@ -1,4 +1,4 @@
-use crate::grid::VectorGrid;
+use crate::{errors::OutOfBoundsError, grid::VectorGrid};
 pub fn clear_screen() {
     print!("{}", termion::clear::All)
 }
@@ -26,7 +26,9 @@ where
             let screen_row_index = num_rows - data_row_index;
             let screen_column_index = 1 + data_column_index;
 
-            // TODO: actually handle this
+            // maybe handle this in the future but honestly i'm okay with it
+            // panicking here since this should always work since we get the size of the
+            // underlying structure... but it feels wrong...
             let element = grid.get_element(data_column_index, data_row_index).unwrap();
             let mut print_str = " ";
             if *element == *grid.get_filled() {

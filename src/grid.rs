@@ -1,5 +1,4 @@
-#[derive(Debug)]
-pub struct OutOfBoundsError;
+use crate::errors::OutOfBoundsError;
 
 #[derive(Clone)]
 pub struct VectorGrid<T> {
